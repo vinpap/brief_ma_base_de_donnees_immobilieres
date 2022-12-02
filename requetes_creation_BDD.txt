@@ -1,0 +1,59 @@
+CREATE TABLE Vente(
+   id_vente INT,
+   id_bien INT NOT NULL,
+   date_ DATE NOT NULL,
+   valeur INT,
+   PRIMARY KEY(id_vente),
+   UNIQUE(id_bien)
+);
+
+CREATE TABLE Région(
+   CODREG INT,
+   REG VARCHAR(50),
+   regrgp_nom VARCHAR(50),
+   PRIMARY KEY(CODREG)
+);
+
+CREATE TABLE Département(
+   Code_département VARCHAR(2),
+   dep_nom VARCHAR(50),
+   CODREG INT NOT NULL,
+   PRIMARY KEY(Code_département),
+   UNIQUE(CODREG)
+   FOREIGN KEY(CODREG) REFERENCES Région(CODREG)
+);
+
+CREATE TABLE Commune(
+   code_commune INT,
+   code_postal INT NOT NULL,
+   nom_commune VARCHAR(50) NOT NULL,
+   code_departement INT NOT NULL,
+   PTOT INT,
+   Code_département INT NOT NULL,
+   PRIMARY KEY(code_commune),
+   UNIQUE(Code_département),
+   FOREIGN KEY(Code_département) REFERENCES Département(Code_département)
+);
+
+CREATE TABLE Bien(
+   id_bien INT,
+   no_voie INT,
+   type_voie VARCHAR(4),
+   voie VARCHAR(50),
+   total_piece INT,
+   surface_carrez DOUBLE,
+   surface_local INT,
+   type_local VARCHAR(50),
+   code_commune INT NOT NULL,
+   PRIMARY KEY(id_bien),
+   FOREIGN KEY(code_commune) REFERENCES Commune(code_commune)
+);
+
+CREATE TABLE Concerner(
+   id_bien INT,
+   id_vente INT,
+   PRIMARY KEY(id_bien, id_vente),
+   FOREIGN KEY(id_bien) REFERENCES Bien(id_bien),
+   FOREIGN KEY(id_vente) REFERENCES Vente(id_vente)
+);
+
